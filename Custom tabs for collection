@@ -9,7 +9,7 @@
             {% endif %}
         </div>
         <div class="tab-container">
-            <!-- Tab items -->
+            <!-- Our Tab items to show in Home page either collection,image,html code or liquid code  -->
             <div class="tabs">
                 {% for block in section.blocks %}
                 <div class="tab-item {% if forloop.first == true %}active{% endif %}">
@@ -27,10 +27,10 @@
                 {% endfor %}
                 <div class="line"></div>
             </div>
-            <!-- Tab content -->
+            <!-- Our Tab content for show in Home page either collection,image,html code or liquid code -->
             <div class="tab-content">
                 {% for block in section.blocks %}
-                <div class="tab-pane {% if forloop.first == true %}active{% endif %}">
+                <div class="tab-panel {% if forloop.first == true %}active{% endif %}">
                     {% case block.type %}
                     {% when 'image' %}
                     {{ block.settings.image | img_url: '2048x' | img_tag }}
@@ -61,6 +61,7 @@
                     <ul class="grid grid--uniform grid--view-items">
                         {% for product in collection.products limit: product_limit %}
                         <li class="grid__item grid__item--{{section.id}} {{ grid_item_width }}">
+                        <!-- we can change the products file name according to theme in which we are adding custom tabs -->
                             {% include 'product-grid-item', max_height: max_height, product: product, show_vendor: block.settings.show_vendor %}
                         </li>
                         {% else %}
@@ -87,7 +88,8 @@
         </div>
     </div>
 </div>
-<style>
+<!-- -->
+{% style %}
     .tabs {
         display: flex;
         position: relative;
@@ -108,9 +110,9 @@
     .tab-item {
         min-width: 80px;
         padding: 16px 20px 16px 20px;
-       font-size: 19px;
-    font-weight: 700;
-    text-transform: uppercase;
+        font-size: 19px;
+        font-weight: 700;
+        text-transform: uppercase;
         text-align: center;
         flex: 1;
         color: #3a3a3a;
@@ -125,7 +127,7 @@
         position: relative;
         top: 2px;
     }
-    
+
     .tab-item:hover {
         color: {{ section.settings.button_hover_color }};
         background-color: {{ section.settings.button_hover_background }};
@@ -133,26 +135,26 @@
     .tab-content {
         padding: 28px 0;
     }
-  .tab-item.active {
-    color: #f5f5f5;
-    background-color: #000000;
-}
+    .tab-item.active {
+        color: #f5f5f5;
+        background-color: #000000;
+    }
 
-    .tab-pane {
+    .tab-panel {
         color: #333;
         display: none;
     }
 
-    .tab-pane.active {
+    .tab-panel.active {
         display: block;
     }
 
-    .tab-pane h2 {
+    .tab-panel h2 {
         font-size: 24px;
         margin-bottom: 8px;
     }
-</style>
-
+{% endstyle %}
+<!-- -->
 
 {% schema %}
 {
@@ -308,7 +310,7 @@
         const $$ = document.querySelectorAll.bind(document);
 
         const tabs = $$('.tab-item');
-        const panes = $$('.tab-pane');
+        const panes = $$('.tab-panel');
 
         const tabActive = $('.tab-item.active')
         const line = $('.tabs .line');
@@ -322,7 +324,7 @@
         tabs.forEach((tab, index) => {
             const pane = panes[index];
             tab.onclick = function () {
-                $('.tab-pane.active').classList.remove('active');
+                $('.tab-panel.active').classList.remove('active');
                 $('.tab-item.active').classList.remove('active');
 
                 // tabLine(this)
